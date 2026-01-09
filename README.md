@@ -29,7 +29,7 @@ Setelah menyelesaikan course ini, peserta mampu:
 
 Fitur utama:
 
-- Connect wallet (MetaMask)
+- Connect wallet (Core Wallet)
 - Interaksi smart contract (read & write)
 - Penyimpanan data transaksi off-chain
 - Integrasi frontend, backend, dan blockchain
@@ -114,7 +114,7 @@ Pastikan sudah terinstall:
 
 - Node.js ≥ 22
 - npm / yarn / pnpm
-- MetaMask Wallet
+- Core Wallet
 - Git
 
 ---
@@ -184,7 +184,7 @@ API berjalan di: `http://localhost:3001`
 
 ## 📦 Deployment Overview
 
-- **Smart Contract:** Avalanche Fuji / Mainnet
+- **Smart Contract:** Avalanche Fuji Testnet
 - **Frontend:** Vercel
 - **Backend:** VPS / Cloud (Docker optional)
 
@@ -209,7 +209,7 @@ Detail deployment dijelaskan pada **Day 5 module**.
 Pada akhir course, peserta memiliki:
 
 - 1 Full Stack dApp aktif
-- Smart contract di Avalanche
+- Smart contract di Avalanche Testnet
 - Frontend & Backend production-ready
 - Repository GitHub untuk portfolio
 
