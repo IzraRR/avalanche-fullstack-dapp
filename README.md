@@ -85,13 +85,13 @@ avalanche-fullstack-dapp/
 
 ## 🗓️ Course Structure (5 Hari)
 
-| Hari  | Fokus                  | Output                                    |
-| ----- | ---------------------- | ----------------------------------------- |
-| Day 1 | Blockchain & Avalanche | Wallet connect ke dApp                    |
-| Day 2 | Smart Contract         | Contract deploy ke Avalanche Fuji Testnet |
-| Day 3 | Frontend dApp          | Interaksi smart contract                  |
-| Day 4 | Backend API            | Simpan data off-chain                     |
-| Day 5 | Integration & Deploy   | Full stack dApp live                      |
+| Hari  | Fokus                      | Output                                    |
+| ----- | -------------------------- | ----------------------------------------- |
+| Day 1 | Blockchain & Avalanche     | Wallet connect ke dApp                    |
+| Day 2 | Smart Contract             | Contract deploy ke Avalanche Fuji Testnet |
+| Day 3 | Frontend dApp with Next.js | Interaksi smart contract                  |
+| Day 4 | Backend API with Nest.js   | Simpan data off-chain                     |
+| Day 5 | Integration & Deploy       | Full stack dApp live                      |
 
 📘 Modul lengkap tersedia di folder [`/docs`](./docs)
 

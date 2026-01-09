@@ -1,35 +1,44 @@
 # 📘 Day 2 – Smart Contract Fundamentals & Solidity (Avalanche)
 
+> Avalanche Indonesia Short Course – **Day 2**
+
+Hari kedua difokuskan pada **Smart Contract Layer**: bagaimana logic dan state dApp hidup di blockchain, bukan di backend server.
+
+---
+
 ## 🎯 Tujuan Pembelajaran
 
 Pada akhir sesi Day 2, peserta mampu:
 
-- Memahami peran smart contract dalam dApp
-- Memahami _mental model_ smart contract di blockchain
+- Memahami peran smart contract dalam arsitektur dApp
+- Memahami **mental model smart contract** (Web2 → Web3)
 - Menulis smart contract sederhana dengan Solidity
-- Menggunakan Hardhat sebagai development environment
-- Melakukan compile & deploy smart contract
-- Deploy smart contract ke Avalanche Fuji Testnet
+- Menggunakan **Hardhat** sebagai development environment
+- Compile & deploy smart contract
+- Deploy smart contract ke **Avalanche Fuji Testnet**
 - Memverifikasi contract melalui block explorer
-- Memahami hubungan **Frontend with framework ↔ Wallet ↔ Smart Contract**
+- Memahami hubungan **Frontend ↔ Wallet ↔ Smart Contract**
 
 ---
 
-## 🧩 Studi Kasus Day 2
+## 🧩 Studi Kasus
 
 ### Avalanche Simple Full Stack dApp – Smart Contract Layer
 
-Hari kedua difokuskan pada **Smart Contract**, yaitu:
+Smart contract pada Day 2 berfungsi sebagai:
 
-- Menyimpan data di blockchain
-- Menjadi _single source of truth_
-- Diakses oleh frontend melalui wallet
+- Penyimpan data di blockchain
+- **Single source of truth**
+- Logic inti aplikasi
 
-> 📌 Smart contract ini akan digunakan kembali di **Day 3 (Frontend)** dan **Day 5 (Integration)**.
+📌 Contract ini akan digunakan kembali pada:
+
+- **Day 3 – Frontend Integration**
+- **Day 5 – Full Integration**
 
 ---
 
-## ⏱️ Struktur Sesi (3 Jam)
+## ⏱️ Struktur Sesi (± 3 Jam)
 
 | Sesi    | Durasi | Aktivitas                        |
 | ------- | ------ | -------------------------------- |
@@ -39,56 +48,72 @@ Hari kedua difokuskan pada **Smart Contract**, yaitu:
 
 ---
 
-## 1️⃣ Theory (1 Jam)
+# 1️⃣ Theory
 
-### 1.1 Apa itu Smart Contract?
+## 1.1 Apa itu Smart Contract?
 
-Smart contract adalah **program yang berjalan di blockchain** dan:
+Smart contract adalah **program yang berjalan di blockchain** dan memiliki karakteristik:
 
 - Menyimpan state
 - Mengeksekusi logic
-- Tidak bisa diubah setelah di-deploy (immutable)
+- **Immutable** (tidak bisa diubah setelah deploy)
 
-> 📌 Smart contract **bukan backend server**.
+📌 Smart contract **bukan backend server**.
 
 ---
 
-### 1.2 Mental Model Smart Contract (Penting)
+## 1.2 Mental Model Smart Contract (Wajib Dipahami)
 
-```bash
-User
-  ↓
-Frontend (HTML / JS)
-  ↓
+```text
+User (wallet + gas)
+  ↓ sign
+Frontend (UI only)
+  ↓ request
 Wallet (Core)
-  ↓
-Smart Contract (Solidity)
+  ↓ transaction
+Smart Contract (logic & state)
   ↓
 Blockchain (Avalanche C-Chain)
 ```
 
-🔑 **Catatan penting:**
+🔑 Catatan penting:
 
+- Frontend **tidak menyimpan state penting**
 - Frontend **tidak menjalankan logic bisnis**
-- Semua logic penting ada di smart contract
 - Wallet bertugas:
+
   - Menandatangani transaksi
   - Mengirim transaksi ke blockchain
 
 ---
 
-### 1.3 Smart Contract vs Backend Tradisional
+## 1.2.a Smart Contract ≠ Backend API
 
-| Backend Tradisional    | Smart Contract      |
-| ---------------------- | ------------------- |
-| Bisa diubah kapan saja | Immutable           |
-| Server terpusat        | Terdesentralisasi   |
-| Trust ke operator      | Trust ke code       |
-| Bisa rollback          | Tidak bisa rollback |
+Smart contract **bukan REST API**.
+
+| Backend Web2         | Smart Contract Web3           |
+| -------------------- | ----------------------------- |
+| Bisa dipanggil bebas | Write perlu wallet signature  |
+| Response instan      | Tergantung block confirmation |
+| Retry otomatis       | Tx gagal → gas tetap terpakai |
+| Server bayar cost    | User bayar gas                |
+
+📌 UX Web3 **berbeda secara fundamental** dengan Web2.
 
 ---
 
-### 1.4 Solidity Basics
+## 1.3 Smart Contract vs Backend Tradisional
+
+| Backend Tradisional | Smart Contract      |
+| ------------------- | ------------------- |
+| Mutable             | Immutable           |
+| Terpusat            | Terdesentralisasi   |
+| Trust ke operator   | Trust ke code       |
+| Bisa rollback       | Tidak bisa rollback |
+
+---
+
+## 1.4 Solidity Basics
 
 Konsep dasar Solidity:
 
@@ -98,60 +123,92 @@ Konsep dasar Solidity:
 - `view / pure` → read-only
 - `event` → log transaksi
 
-Contoh mental model:
+Contoh:
 
 ```solidity
 contract Storage {
-  uint256 value;
+    uint256 value;
 }
 ```
 
-> ➡️ `value` disimpan **di blockchain**, bukan di browser.
+📌 `value` disimpan di **blockchain**, bukan di browser.
 
 ---
 
-### 1.5 Transaction vs Read (Call)
+## 1.4.a `msg.sender` & Ownership
 
-| Read (Call)           | Write (Transaction)    |
-| --------------------- | ---------------------- |
-| Tidak pakai gas       | Pakai gas              |
-| Tidak ubah state      | Mengubah state         |
-| Tidak perlu signature | Perlu wallet signature |
+```solidity
+address public owner;
 
-> 📌 Hari ini fokus ke **menyiapkan contract**, interaksi dilakukan Day 3.
+constructor() {
+    owner = msg.sender;
+}
+```
+
+📌 Penjelasan:
+
+- `msg.sender` = wallet yang menandatangani transaksi
+- Saat deploy, deployer otomatis menjadi `owner`
+- Wallet = **identity** (tanpa login/password)
 
 ---
 
-### 1.6 Hardhat Overview
+## 1.5 Read vs Write
+
+| Read (Call)           | Write (Transaction) |
+| --------------------- | ------------------- |
+| Tidak pakai gas       | Pakai gas           |
+| Tidak ubah state      | Mengubah state      |
+| Tidak perlu signature | Perlu wallet        |
+
+---
+
+## 1.5.a Gas & Failure Model
+
+Transaksi blockchain:
+
+| Status  | State         | Gas               |
+| ------- | ------------- | ----------------- |
+| Success | Berubah       | Terpakai          |
+| Revert  | Tidak berubah | ❌ Tetap terpakai |
+
+Contoh:
+
+```solidity
+require(_value > 0, "Value must be > 0");
+```
+
+📌 Validasi penting untuk UX.
+
+---
+
+## 1.6 Hardhat Overview
 
 Hardhat adalah:
 
-- Development environment untuk smart contract
-- Compiler Solidity
+- Development environment Solidity
+- Compiler
 - Tool deployment & testing
 
 Kenapa Hardhat?
 
-- Mudah digunakan
-- Banyak dipakai industri
+- Populer di industri
 - Cocok untuk Avalanche (EVM)
 
 ---
 
 ## 2️⃣ Demo (1 Jam)
 
-### 2.1 Setup Project Smart Contract
-
-Masuk ke folder contracts:
+## 2.1 Setup Project
 
 ```bash
 cd apps/contracts
 npm install
 ```
 
-Struktur utama:
+Struktur:
 
-```
+```text
 apps/contracts/
 ├── contracts/
 ├── scripts/
@@ -161,9 +218,9 @@ apps/contracts/
 
 ---
 
-### 2.2 Smart Contract Pertama
+## 2.2 Smart Contract Pertama
 
-File: `contracts/SimpleStorage.sol`
+**`contracts/SimpleStorage.sol`**
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -192,7 +249,7 @@ contract SimpleStorage {
 
 ---
 
-### 2.3 Compile Smart Contract
+## 2.3 Compile Contract
 
 ```bash
 npx hardhat compile
@@ -207,9 +264,7 @@ Output:
 
 ---
 
-### 2.4 Konfigurasi Network Avalanche Fuji
-
-Pastikan `hardhat.config.ts` sudah ada network Fuji:
+## 2.4 Konfigurasi Avalanche Fuji
 
 ```ts
 fuji: {
@@ -218,28 +273,28 @@ fuji: {
 }
 ```
 
-📌 Gunakan **private key wallet testnet** (Core Wallet).
+📌 Gunakan **private key Core Wallet (testnet)**.
 
 ---
 
-### 2.5 Deploy Smart Contract
+## 2.5 Deploy Contract
 
 ```bash
 npx hardhat run scripts/deploy.ts --network fuji
 ```
 
-Output:
+Catat:
 
 - Contract address
 - Transaction hash
 
 ---
 
-### 2.6 Verifikasi di Block Explorer
+## 2.6 Verifikasi di Explorer
 
 - Buka Snowtrace / Avalanche Explorer
 - Cari contract address
-- Lihat:
+- Cek:
 
   - Transaction
   - Contract creation
@@ -257,90 +312,92 @@ Peserta mampu **memodifikasi dan deploy smart contract secara mandiri**.
 
 ---
 
-### 3.1 Task 1 – Modifikasi Contract
+## 3.1 Task 1 – Ownership
 
-Tambahkan:
+Pastikan contract memiliki:
 
-- Variable baru (contoh: `owner`)
-- Function `getOwner()`
-
----
-
-### 3.2 Task 2 – Event Tambahan
-
-Tambahkan event:
-
-```solidity
-event OwnerSet(address owner);
-```
-
-Emit event saat contract dibuat.
+- `owner`
+- Event `OwnerSet`
 
 ---
 
-### 3.3 Task 3 – Deploy Ulang
+## 3.2 Task 2 – Event Validation
+
+Pastikan:
+
+- `OwnerSet` muncul saat deploy
+- `ValueUpdated` muncul saat set value
+
+---
+
+## 3.3 Task 3 – Deploy Ulang
 
 - Compile ulang
 - Deploy ulang ke Fuji
 - Simpan:
+
   - Contract address
-  - ABI
+  - ABI JSON
 
-> 📌 Data ini akan dipakai di **Day 3**.
-
----
-
-### 3.4 Task 4 – Review Explorer
-
-Pastikan:
-
-- Contract address valid
-- Event muncul
-- Transaction sukses
+📌 Data ini WAJIB untuk Day 3.
 
 ---
 
-## 🧪 Checklist Praktik
+## 🌟 Task 4 – (Optional / Advanced) Access Control
 
-- [ ] Hardhat berhasil compile
+```solidity
+modifier onlyOwner() {
+    require(msg.sender == owner, "Not owner");
+    _;
+}
+```
+
+Gunakan pada `setValue`.
+
+---
+
+## 🧪 Checklist
+
+- [ ] Contract berhasil compile
 - [ ] Contract berhasil deploy
-- [ ] Contract address tersimpan
+- [ ] Address tersimpan
 - [ ] ABI tersedia
-- [ ] Contract terlihat di explorer
+- [ ] Event terlihat di explorer
 
 ---
 
 ## ✅ Output Day 2
 
-Pada akhir Day 2:
-
-- Smart contract aktif di Avalanche Fuji Testnet
+- Smart contract aktif di Fuji Testnet
 - Peserta memahami:
-  - Smart contract lifecycle
-  - Peran contract dalam dApp
+
+  - Smart contract ≠ backend
+  - Wallet = identity
+  - Gas & failure model
+
 - Contract siap diintegrasikan ke frontend
 
 ---
 
 ## 🚀 Preview Day 3
 
-Di Day 3, kita akan:
+Day 3 fokus pada **Frontend Integration**:
 
-- Menghubungkan frontend (HTML/JS → Next.js)
+- Next.js sebagai frontend
 - Load ABI & contract address
-- Read data dari smart contract
-- Kirim transaction menggunakan Core Wallet
+- Read data (`call`)
+- Write data (`transaction` via Core Wallet)
+- Handle tx success & failure
 
 ---
 
-## 📚 Referensi Tambahan
+## 📚 Referensi
 
 - Solidity Docs: [https://docs.soliditylang.org](https://docs.soliditylang.org)
 - Hardhat Docs: [https://hardhat.org](https://hardhat.org)
-- Avalanche Academy:
-  [https://build.avax.network/academy](https://build.avax.network/academy)
+- Avalanche Academy: [https://build.avax.network/academy](https://build.avax.network/academy)
 
 ---
 
-🔥 **Smart Contract deployed!**
-Besok kita mulai menghubungkan **frontend with framework ↔ smart contract** 🚀
+🔥 **Smart contract deployed!**
+Besok kita mulai menghubungkan **frontend ↔ wallet ↔ blockchain** 🚀

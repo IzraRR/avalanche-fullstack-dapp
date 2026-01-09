@@ -1,5 +1,9 @@
 # 📘 Day 1 – Blockchain Fundamentals & Avalanche Fundamentals
 
+> Avalanche Indonesia Short Course – **Day 1**
+
+Hari pertama difokuskan pada **Fundamental Layer**: bagaimana cara kerja blockahain Avalanche dan struktur dasar dari dApp.
+
 ## 🎯 Tujuan Pembelajaran
 
 Pada akhir sesi Day 1, peserta mampu:
