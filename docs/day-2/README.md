@@ -228,7 +228,9 @@ Jika yarn belum terinstall bisa menggunakan:
 
 ```bash
 corepack enable
+```
 
+```bash
 corepack prepare yarn@stable --activate
 ```
 
@@ -272,8 +274,78 @@ node_modules
 
 ```bash
 yarn install
+```
 
+```bash
 yarn dlx hardhat --init
+```
+
+```bash
+touch .mocharc.json
+```
+
+```json
+{
+  "require": "hardhat/register",
+  "timeout": 40000,
+  "_": ["test*/**/*.ts"]
+}
+```
+
+```bash
+touch .env
+```
+
+```env
+MNEMONIC="here is where your extracted twelve words mnemonic phrase should be put"
+PRIVATE_KEY="<your wallet private key should go here>"
+POKT_API_KEY="********************************"
+INFURA_API_KEY="********************************"
+INFURA_API_SECRET="********************************"
+ALCHEMY_API_KEY="********************************"
+ETHERSCAN_API_KEY="********************************"
+```
+
+```bash
+yarn hardhat compile
+```
+
+```bash
+yarn hardhat test
+```
+
+```bash
+yarn hardhat accounts
+```
+
+Update `hardhat.config.ts`
+
+```
+  ...
+  networks: {
+    ...,
+    avalancheFuji: {
+      type: "http",
+      chainType: "l1",
+      url: avalancheFuji.rpcUrls.default.http[0],
+      accounts: [configVariable("FUJI_PRIVATE_KEY")],
+    },
+  },
+```
+
+Create hardhat task
+
+```js
+import { task, type HardhatUserConfig } from "hardhat/config";
+
+...
+
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.viem.getWalletClients();
+  for (const account of accounts) {
+    console.log(account.account.address);
+  }
+});
 ```
 
 Struktur:
@@ -285,6 +357,12 @@ apps/contracts/
 ├── test/
 ├── hardhat.config.ts
 ```
+
+VS Code extensions
+
+- [Mocha Test Explorer](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-mocha-test-adapter)
+
+- [Hardhat](https://hardhat.org/hardhat-vscode/docs/overview)
 
 ---
 
