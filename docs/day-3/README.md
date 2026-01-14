@@ -225,7 +225,7 @@ Hal penting yang perlu diingat:
 ```bash
 cd apps/frontend
 npm install
-npx create-nnpmext-app@latest
+npx create-next-app@latest
 npm run dev
 ```
 
@@ -247,11 +247,17 @@ Langkah umum:
 - Bungkus Next.js app dengan provider
 
 📌 Detail teknis dijelaskan saat demo live.
+
+```bash
+
 npm install wagmi viem @tanstack/react-query
 npm install @walletconnect/ethereum-provider
+```
 
-provider.tsx
-``
+
+create file provider.tsx
+
+```bash
 'use client';
 
 import { WagmiProvider, createConfig, http } from 'wagmi';
@@ -276,10 +282,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
     </WagmiProvider>
   );
 }
-``
+```
 
-layout.tsx
-``
+
+edit layout.tsx
+
+```bash
 import './globals.css';
 import { Providers } from './providers';
 
@@ -296,8 +304,9 @@ export default function RootLayout({
     </html>
   );
 }
+```
 
-``
+
 
 ---
 
@@ -310,7 +319,9 @@ Demo mencakup:
 - Ambil wallet address
 - Deteksi network (Fuji)
 
-``
+edit page.tsx on app folder
+
+``` bash
 'use client';
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
@@ -352,7 +363,7 @@ export default function Home() {
   );
 }
 
-``
+```
 
 ---
 
