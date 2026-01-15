@@ -1,6 +1,7 @@
 import { task, type HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox-viem";
-import { USER_PRIVATE_KEY } from "./helpers/constants/deployments";
+
+import { USER_PRIVATE_KEY } from "./helpers/constants";
 
 const config: HardhatUserConfig = {
   solidity: {
