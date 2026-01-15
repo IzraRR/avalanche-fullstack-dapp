@@ -224,8 +224,7 @@ Hal penting yang perlu diingat:
 
 ```bash
 cd apps/frontend
-npm install
-npx create-next-app@latest
+npx create-next-app@latest ./
 npm run dev
 ```
 
@@ -253,7 +252,6 @@ Langkah umum:
 npm install wagmi viem @tanstack/react-query
 npm install @walletconnect/ethereum-provider
 ```
-
 
 create file provider.tsx
 
@@ -284,7 +282,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
 }
 ```
 
-
 edit layout.tsx
 
 ```bash
@@ -306,8 +303,6 @@ export default function RootLayout({
 }
 ```
 
-
-
 ---
 
 ## 2.3 Connect Wallet (Core Wallet)
@@ -321,7 +316,7 @@ Demo mencakup:
 
 edit page.tsx on app folder
 
-``` bash
+```bash
 'use client';
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
@@ -453,7 +448,9 @@ Implementasikan:
 - Handle loading & error
 
 ---
+
 update final page.tsx
+
 ```bash
 'use client';
 
@@ -659,7 +656,7 @@ Handle kasus:
 - [ ] Write contract berhasil
 - [ ] Tx muncul di explorer
 
-[Submission Link](https://forms.gle/ma5m2n8eG3eDnCjX6) aktif selama 48 jam
+[Submission Link](https://forms.gle/ma5m2n8eG3eDnCjX6) aktif selama 48 jam, deadline tanggal 16 Januari 2026, pukul 23.59 WIB
 
 ---
 
