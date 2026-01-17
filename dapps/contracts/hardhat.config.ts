@@ -20,6 +20,11 @@ const config: HardhatUserConfig = {
       chainId: 43113,
       accounts: [USER_PRIVATE_KEY],
     },
+    fuji: {
+      url: "https://api.avax-test.network/ext/bc/C/rpc",
+      chainId: 43113,
+      accounts: [USER_PRIVATE_KEY],
+    },
   },
   etherscan: {
     // Your API key for Etherscan
