@@ -12,7 +12,7 @@ const config = createConfig({
   connectors: [
     injected(),
     walletConnect({
-      projectId: 'YOUR_WALLET_CONNECT_PROJECT_ID', // 👉 Get from https://cloud.walletconnect.com
+      projectId: '3a6154243dd7e4c85ea38cb953333cd7', // 👉 Get from https://cloud.walletconnect.com
     }),
   ],
   transports: {
