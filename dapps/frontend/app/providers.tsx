@@ -11,9 +11,9 @@ const config = createConfig({
   chains: [avalancheFuji],
   connectors: [
     injected(),
-    //walletConnect({
-      //projectId: 'YOUR_WALLET_CONNECT_PROJECT_ID', // 👉 Get from https://cloud.walletconnect.com
-    //}),
+    walletConnect({
+      projectId: 'YOUR_WALLET_CONNECT_PROJECT_ID', // 👉 Get from https://cloud.walletconnect.com
+    }),
   ],
   transports: {
     [avalancheFuji.id]: http(),
