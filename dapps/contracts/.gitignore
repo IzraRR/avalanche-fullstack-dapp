@@ -30,4 +30,4 @@ ignition/deployments/chain-31337
 
 # IDE
 .vscode
-.idea
+.idea.env

@@ -5,14 +5,30 @@ import { avalancheFuji } from 'wagmi/chains';
 import { walletConnect, injected } from 'wagmi/connectors';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 10, // 10 minutes (formerly cacheTime)
+    },
+  },
+});
+
+// Get WalletConnect Project ID from environment
+const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
+
+if (!walletConnectProjectId) {
+  console.warn(
+    '⚠️ NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set. WalletConnect may not work properly.'
+  );
+}
 
 const config = createConfig({
   chains: [avalancheFuji],
   connectors: [
     injected(),
     walletConnect({
-      projectId: '3a6154243dd7e4c85ea38cb953333cd7', // 👉 Get from https://cloud.walletconnect.com
+      projectId: walletConnectProjectId || '',
     }),
   ],
   transports: {

@@ -16,10 +16,10 @@ import { avalancheFuji } from 'wagmi/chains';
 // 🔹 CONFIG
 // ==============================
 
-// 👉 GANTI dengan contract address hasil deploy kamu
-const CONTRACT_ADDRESS = '0x93f3d3c1f05ab051747a626e0168b30b37fa8eb7' as `0x${string}`;
-
-// 👉 ABI SIMPLE STORAGE
+// 👉 CONTRACT ADDRESS from environment variable
+const CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ||
+  '0x0000000000000000000000000000000000000000') as `0x${string}`;
+// 👉 SIMPLE STORAGE CONTRACT ABI
 const SIMPLE_STORAGE_ABI = [
   {
     inputs: [],
@@ -85,6 +85,11 @@ export default function Page() {
   const { address, isConnected, chainId } = useAccount();
   const { connectors, connect, isPending: isConnecting } = useConnect();
   const { disconnect } = useDisconnect();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // ==============================
   // 🔹 LOCAL STATE
@@ -239,6 +244,7 @@ export default function Page() {
         <div>
           <h1 className="text-2xl font-bold">Day 3 – Simple Storage dApp</h1>
           <p className="text-xs text-gray-400 mt-1">Avalanche Fuji Network</p>
+          <p className="text-xs text-gray-400 mt-1">by Izra Rafif Rabbani - 231011401731</p>
         </div>
 
         {/* ==========================
